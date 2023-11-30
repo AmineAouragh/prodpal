@@ -11,13 +11,22 @@ export default function Home() {
   const [ range, setRange ] = useState(0)
   const [ features, setFeatures ] = useState('')
   const [ productImpact, setProductImpact ] = useState('')
-  const [ useCase, setUseCase ] = useState('')
+  const [ context, setContext ] = useState('')
+  const [ submitClicked, setSubmitClicked ] = useState(false)
  
   function moveToStepTwo() {
-    if (name.length >= 3 && productName.length >= 3 && range >= 1) {
+    if (name.length >= 3 && productName.length >= 3 && range >= 1 && productImpact.length >= 60) {
       setShowStepTwo(true)
     } else {
       setShowStepTwo(false)
+    }
+  }
+
+  function moveToStepThree() {
+    if (features.length >= 100 && context.length >= 80) {
+      setShowStepThree(true)
+    } else {
+      setShowStepThree(false)
     }
   }
 
@@ -51,7 +60,7 @@ export default function Home() {
           <input type="url" id="product_url" value={url} onChange={e => setUrl(e.target.value)} className="rounded-lg px-2 py-1 text-gray-50 bg-gray-800 border-4 border-gray-50 font-bold" required />
           </div>
           <label className="font-bold text-gray-50 text-xl italic mb-2">How did this product positively impact your <br /> daily life or workflow?</label>
-          <textarea rows="6" cols="20" maxLength={320} value={productImpact} onChange={e => setProductImpact(e.target.value)} placeholder='Please be as precise and concise as possible.' className="px-3 py-1 mb-2 font-bold text-lg text-gray-800 rounded-lg">
+          <textarea rows="6" cols="20" maxLength={320} value={productImpact} onChange={e => setProductImpact(e.target.value)} placeholder='Please be as precise and concise as possible. 60 characters minimum required.' className="px-3 py-1 mb-2 font-bold text-lg text-gray-800 rounded-lg">
             
           </textarea>
           <label className="font-bold text-gray-50 text-xl italic mb-2">How long have you been using this product?</label>
@@ -68,25 +77,29 @@ export default function Home() {
         (showForm && (showStepTwo == true) && (showStepThree == false))&&
         <form className="rounded-lg p-4 border-2 border-gray-100 flex flex-col 2xl:w-1/4">
           <label className="font-bold text-gray-50 text-xl italic mb-2">What specific features of the product do you find most valuable or enjoyable?</label>
-          <textarea rows="6" cols="20" maxLength={320} value={features} onChange={e => setFeatures(e.target.value)} placeholder='Please be as precise and concise as possible.' className="px-3 py-1 mb-2 font-bold text-lg text-gray-800 rounded-lg">
+          <textarea rows="6" cols="20" maxLength={320} value={features} onChange={e => setFeatures(e.target.value)} placeholder='Please be as precise and concise as possible. 100 characters minimum required.' className="px-3 py-1 mb-2 font-bold text-lg text-gray-800 rounded-lg">
             
           </textarea>
           <label className="font-bold text-gray-50 text-xl italic mb-2">In what context or situation do you primarily use this product?</label>
-          <textarea rows="6" cols="20" maxLength={320} placeholder='Please be as precise and concise as possible.' className="px-3 py-1 mb-2 font-bold text-lg text-gray-800 rounded-lg">
+          <textarea rows="6" cols="20" value={context} onChange={e => setContext(e.target.value)} maxLength={320} placeholder='Please be as precise and concise as possible. 80 characters minimum required.' className="px-3 py-1 mb-2 font-bold text-lg text-gray-800 rounded-lg">
             
           </textarea>
           
-          <button type="button" onClick={() => setShowStepThree(true)} className="rounded-lg px-3 py-2 font-bold text-gray-50 hover:text-gray-900 hover:bg-gray-50 bg-gray-900 mt-4 border-4 border-gray-50">Step 2/3</button>
+          <button type="button" onClick={moveToStepThree} className="rounded-lg px-3 py-2 font-bold hover:text-gray-50 text-gray-900 bg-gray-50 hover:bg-gray-900 mt-4 border-4 border-gray-50">Step 2/3</button>
         </form>
       }
       {
-        (showForm && (showStepThree == true))&&
+        (showForm && (showStepThree == true) && (submitClicked == false))&&
         <form className="rounded-lg p-4 border-2 border-gray-100 flex flex-col 2xl:w-1/4">
           
           <label className="font-bold text-gray-50 text-xl italic mb-2">Is there anything else you would like to share about your experience with this product?(optional)</label>
           <textarea rows="8" cols="20" maxLength={320} placeholder='What did you like about it? What did you use it for? Please be as precise and concise as possible.' className="px-3 py-1 font-bold text-lg text-gray-800 rounded-lg"></textarea>
-          <button type="button" onClick={() => setShowStepThree(true)} className="rounded-lg px-3 py-2 font-bold hover:text-gray-50 text-gray-900 hover:bg-gray-900 bg-gray-50 mt-4 border-4 border-gray-50">Submit the product</button>
+          <button type="button" onClick={() => setSubmitClicked(true)} className="rounded-lg px-3 py-2 font-bold hover:text-gray-50 text-gray-900 hover:bg-gray-900 bg-gray-50 mt-4 border-4 border-gray-50">Submit the product</button>
         </form>
+      }
+      {
+        submitClicked &&
+        <p className="text-gray-50 font-bold text-xl">The product was submitted for review. Thank you for your contribution.</p>
       }
       <p className="mt-8 text-gray-50">This is only on test mode, no products will really be submitted yet.</p>
     </div>
