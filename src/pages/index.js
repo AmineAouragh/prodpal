@@ -15,7 +15,7 @@ export default function Home() {
   const [ submitClicked, setSubmitClicked ] = useState(false)
  
   function moveToStepTwo() {
-    if (name.length >= 3 && productName.length >= 3 && range >= 1 && productImpact.length >= 60) {
+    if (name.length >= 3 && productName.length >= 3 && range >= 1 && productImpact.length >= 120) {
       setShowStepTwo(true)
     } else {
       setShowStepTwo(false)
@@ -23,7 +23,7 @@ export default function Home() {
   }
 
   function moveToStepThree() {
-    if (features.length >= 100 && context.length >= 80) {
+    if (features.length >= 100 && context.length >= 160) {
       setShowStepThree(true)
     } else {
       setShowStepThree(false)
@@ -31,7 +31,7 @@ export default function Home() {
   }
 
   return (
-    <div className={`w-full bg-gray-900 h-full py-4 px-2 absolute  flex flex-col items-center justify-center`}>
+    <div className={`w-full bg-gray-900 h-full py-4 px-2 h-screen relative  flex flex-col items-center justify-center`}>
       <h1 className="text-gray-50 font-bold text-center text-6xl">ProdPal 🛠</h1>
       <h2 className="text-gray-50 mt-4 mb-12 text-center text-4xl">
         Share The Products You Love, Explore Real User Picks
@@ -60,7 +60,7 @@ export default function Home() {
           <input type="url" id="product_url" value={url} onChange={e => setUrl(e.target.value)} className="rounded-lg px-2 py-1 text-gray-50 bg-gray-800 border-4 border-gray-50 font-bold" required />
           </div>
           <label className="font-bold text-gray-50 text-xl italic mb-2">How did this product positively impact your <br /> daily life or workflow?</label>
-          <textarea rows="6" cols="20" maxLength={320} value={productImpact} onChange={e => setProductImpact(e.target.value)} placeholder='Please be as precise and concise as possible. 60 characters minimum required.' className="px-3 py-1 mb-2 font-bold text-lg text-gray-800 rounded-lg">
+          <textarea rows="6" cols="20" maxLength={320} value={productImpact} onChange={e => setProductImpact(e.target.value)} placeholder='Please be as precise and concise as possible. 120 characters minimum required.' className="px-3 py-1 mb-2 font-bold text-lg text-gray-800 rounded-lg">
             
           </textarea>
           <label className="font-bold text-gray-50 text-xl italic mb-2">How long have you been using this product?</label>
@@ -81,7 +81,7 @@ export default function Home() {
             
           </textarea>
           <label className="font-bold text-gray-50 text-xl italic mb-2">In what context or situation do you primarily use this product?</label>
-          <textarea rows="6" cols="20" value={context} onChange={e => setContext(e.target.value)} maxLength={320} placeholder='Please be as precise and concise as possible. 80 characters minimum required.' className="px-3 py-1 mb-2 font-bold text-lg text-gray-800 rounded-lg">
+          <textarea rows="6" cols="20" value={context} onChange={e => setContext(e.target.value)} maxLength={320} placeholder='Please be as precise and concise as possible. 160 characters minimum required.' className="px-3 py-1 mb-2 font-bold text-lg text-gray-800 rounded-lg">
             
           </textarea>
           
