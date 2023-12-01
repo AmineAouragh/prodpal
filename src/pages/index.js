@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import Link from 'next/link'
 
 export default function Home() {
 
@@ -9,21 +10,44 @@ export default function Home() {
   const [ productName, setProductName ] = useState('')
   const [ url, setUrl ] = useState('')
   const [ range, setRange ] = useState(0)
+  const [ duration, setDuration ] = useState('')
   const [ features, setFeatures ] = useState('')
   const [ productImpact, setProductImpact ] = useState('')
   const [ context, setContext ] = useState('')
   const [ submitClicked, setSubmitClicked ] = useState(false)
+  const [ showSubmittedProduct, setShowSubmittedProduct ] = useState(false)
+
+  function convertRangeToText() {
+    switch(range) {
+      case 1:
+        setDuration('Less than 1 year')
+        break
+      case 2:
+        setDuration('Between 1 and 2 years')
+        break
+      case 3:
+        setDuration('Between 2 and 3 years')
+        break
+      case 4:
+        setDuration('Between 3 and 5 years')
+        break
+      case 5:
+        setDuration('5+ years')
+        break
+    }
+  }
  
   function moveToStepTwo() {
-    if (name.length >= 3 && productName.length >= 3 && range >= 1 && productImpact.length >= 120) {
+    if (name.length >= 3 && productName.length >= 3 && range >= 1 && productImpact.length >= 80) {
       setShowStepTwo(true)
+      convertRangeToText()
     } else {
       setShowStepTwo(false)
     }
   }
 
   function moveToStepThree() {
-    if (features.length >= 100 && context.length >= 160) {
+    if (features.length >= 80 && context.length >= 100) {
       setShowStepThree(true)
     } else {
       setShowStepThree(false)
@@ -31,7 +55,7 @@ export default function Home() {
   }
 
   return (
-    <div className={`w-full bg-gray-900 h-full py-4 px-2 h-screen relative  flex flex-col items-center justify-center`}>
+    <div className={`w-full bg-gray-900 min-h-screen py-4 px-2 relative  flex flex-col items-center justify-center`}>
       <h1 className="text-gray-50 font-bold text-center text-6xl">ProdPal 🛠</h1>
       <h2 className="text-gray-50 mt-4 mb-12 text-center text-4xl">
         Share The Products You Love, Explore Real User Picks
@@ -59,8 +83,8 @@ export default function Home() {
           <label htmlFor="product_url" className="font-bold text-gray-50 text-xl mr-4">Product URL: </label>
           <input type="url" id="product_url" value={url} onChange={e => setUrl(e.target.value)} className="rounded-lg px-2 py-1 text-gray-50 bg-gray-800 border-4 border-gray-50 font-bold" required />
           </div>
-          <label className="font-bold text-gray-50 text-xl italic mb-2">How did this product positively impact your <br /> daily life or workflow?</label>
-          <textarea rows="6" cols="20" maxLength={320} value={productImpact} onChange={e => setProductImpact(e.target.value)} placeholder='Please be as precise and concise as possible. 120 characters minimum required.' className="px-3 py-1 mb-2 font-bold text-lg text-gray-800 rounded-lg">
+          <label className="font-bold break-words text-gray-50 text-xl italic mb-2">How did this product positively impact your daily life or workflow?</label>
+          <textarea rows="6" cols="20" maxLength={320} value={productImpact} onChange={e => setProductImpact(e.target.value)} placeholder='Please be as precise and concise as possible. 80 characters minimum required.' className="px-3 py-1 mb-2 font-bold text-lg text-gray-800 rounded-lg">
             
           </textarea>
           <label className="font-bold text-gray-50 text-xl italic mb-2">How long have you been using this product?</label>
@@ -77,11 +101,11 @@ export default function Home() {
         (showForm && (showStepTwo == true) && (showStepThree == false))&&
         <form className="rounded-lg p-4 border-2 border-gray-100 flex flex-col 2xl:w-1/4">
           <label className="font-bold text-gray-50 text-xl italic mb-2">What specific features of the product do you find most valuable or enjoyable?</label>
-          <textarea rows="6" cols="20" maxLength={320} value={features} onChange={e => setFeatures(e.target.value)} placeholder='Please be as precise and concise as possible. 100 characters minimum required.' className="px-3 py-1 mb-2 font-bold text-lg text-gray-800 rounded-lg">
+          <textarea rows="6" cols="20" maxLength={320} value={features} onChange={e => setFeatures(e.target.value)} placeholder='Please be as precise and concise as possible. 80 characters minimum required.' className="px-3 py-1 mb-2 font-bold text-lg text-gray-800 rounded-lg">
             
           </textarea>
           <label className="font-bold text-gray-50 text-xl italic mb-2">In what context or situation do you primarily use this product?</label>
-          <textarea rows="6" cols="20" value={context} onChange={e => setContext(e.target.value)} maxLength={320} placeholder='Please be as precise and concise as possible. 160 characters minimum required.' className="px-3 py-1 mb-2 font-bold text-lg text-gray-800 rounded-lg">
+          <textarea rows="6" cols="20" value={context} onChange={e => setContext(e.target.value)} maxLength={320} placeholder='Please be as precise and concise as possible. 100 characters minimum required.' className="px-3 py-1 mb-2 font-bold text-lg text-gray-800 rounded-lg">
             
           </textarea>
           
@@ -98,8 +122,28 @@ export default function Home() {
         </form>
       }
       {
-        submitClicked &&
+        (submitClicked && (showSubmittedProduct == false)) &&
+        <div className="border-2 flex flex-col items-center border-gray-50 rounded-lg px-3 py-2">
         <p className="text-gray-50 font-bold text-xl">The product was submitted for review. Thank you for your contribution.</p>
+        <button type="button" onClick={() => setShowSubmittedProduct(true)} className="underline text-center mt-2 text-gray-50 font-bold text-xl">Check your submission</button>
+        </div>
+      }
+      {
+        showSubmittedProduct &&
+        <div className="border-2 p-4 border-gray-50 rounded-lg 2xl:w-1/3">
+          <p className="text-gray-50 break-words text-center mb-4 text-4xl">Hi, <span className="font-bold">{name}!</span> Thanks for submitting <span className="font-bold">{productName}</span> to ProdPal</p>
+          <p className="text-gray-50 text-xl mb-2">Product URL: <Link href={`https://${url}`} className="underline">{url}</Link></p>
+          <p className="text-gray-50 text-xl mb-2"><span className="font-bold">{productName}</span> is a product you&apos;ve been using for {range}</p>
+          <p className="text-gray-50 text-xl">How <span className="font-bold">{productName}</span> impacted your daily life or workflow:</p>
+          <p className="text-gray-50 bg-gray-800 my-2 break-words max-w-xl px-2 py-1 rounded-md italic text-xl">{productImpact}</p>
+          <p className="text-gray-50 text-xl">The specific features of <span className="font-bold">{productName}</span> you find most valuable or enjoyable:</p>
+          <p className="text-gray-50 bg-gray-800 my-2 break-words max-w-xl px-2 py-1 rounded-md italic text-xl">{features}</p>
+          <p className="text-gray-50 text-xl">The context or situation where you primarily use <span className="font-bold">{productName}</span>:</p>
+          <p className="text-gray-50 bg-gray-800 my-2 break-words max-w-xl px-2 py-1 rounded-md italic text-xl">{context}</p>
+          <div className="flex flex-row justify-center">
+          <button type="button" onClick={() => setShowSubmittedProduct(false)} className="rounded-lg px-3 py-2 font-bold hover:text-gray-50 text-gray-900 hover:bg-gray-900 bg-gray-50 mt-4 border-4 border-gray-50">Good!</button>
+          </div>
+        </div>
       }
       <p className="mt-8 text-gray-50">This is only on test mode, no products will really be submitted yet.</p>
     </div>
